@@ -7,6 +7,7 @@ data class GastoDTO(
     val id: Long? = null,
     val data: LocalDate,
     val descricao: String,
+    val parcela: String,
     val valor: BigDecimal,
-    val lojaId: Long?
+    val loja: LojaDTO
 ) 

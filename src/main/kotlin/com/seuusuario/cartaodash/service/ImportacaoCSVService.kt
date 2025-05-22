@@ -30,9 +30,13 @@ class ImportacaoCSVService(
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         linhas.drop(20)
             .filter { it.isNotEmpty() }
-            .forEach { linha ->
+            .forEachIndexed { i, linha ->
+
+                println("Importando index $i")
+
                 val data = LocalDate.parse(linha[0], formatter)
                 val nomeLoja = linha[1]
+                val parcela = linha[2]
                 val valor = linha[3]
                     .replace("\"", "")
                     .replace("R$ ", "")
@@ -52,7 +56,12 @@ class ImportacaoCSVService(
                     throw IllegalArgumentException("Loja não pode ser nulo")
                 }
 
-                val gasto = Gasto(data = data, descricao = "Compra no/na ".plus(nomeLoja), valor = valor, loja = loja)
+                val gasto = Gasto(data = data,
+                    descricao = "Compra no/na ".plus(nomeLoja),
+                    parcela = parcela,
+                    valor = valor,
+                    loja = loja)
+
                 gastoRepository.save(gasto)
             }
     }

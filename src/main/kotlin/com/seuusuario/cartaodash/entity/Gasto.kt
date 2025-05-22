@@ -1,5 +1,6 @@
 package com.seuusuario.cartaodash.entity
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
@@ -16,6 +17,8 @@ data class Gasto(
     val id: Long = 0,
     val data: LocalDate,
     val descricao: String,
+    @Column(nullable = true)
+    val parcela: String,
     val valor: BigDecimal,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)

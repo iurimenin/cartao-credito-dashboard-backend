@@ -1,5 +1,6 @@
 package com.seuusuario.cartaodash.controller
 
+import com.seuusuario.cartaodash.dto.CategoriaDTO
 import com.seuusuario.cartaodash.dto.LojaDTO
 import com.seuusuario.cartaodash.entity.Loja
 import com.seuusuario.cartaodash.repository.CategoriaRepository
@@ -22,30 +23,30 @@ class LojaController(
 ) {
     @PostMapping
     fun criar(@RequestBody dto: LojaDTO): ResponseEntity<LojaDTO> {
-        val categoria = categoriaRepository.findById(dto.categoriaId).orElse(null)
+        val categoria = categoriaRepository.findById(dto.categoria.id).orElse(null)
             ?: return ResponseEntity.badRequest().build()
         val loja = lojaRepository.save(Loja(nome = dto.nome, categoria = categoria))
-        return ResponseEntity.ok(LojaDTO(id = loja.id, nome = loja.nome, categoriaId = categoria.id))
+        return ResponseEntity.ok(LojaDTO(id = loja.id, nome = loja.nome, categoria = CategoriaDTO(categoria)))
     }
 
     @GetMapping
     fun listar(): List<LojaDTO> = lojaRepository.findAll().map {
-        LojaDTO(id = it.id, nome = it.nome, categoriaId = it.categoria.id)
+        LojaDTO(id = it.id, nome = it.nome, categoria = CategoriaDTO(it.categoria))
     }
 
     @GetMapping("/{id}")
     fun buscar(@PathVariable id: Long): ResponseEntity<LojaDTO> =
         lojaRepository.findById(id)
-            .map { ResponseEntity.ok(LojaDTO(it.id, it.nome, it.categoria.id)) }
+            .map { ResponseEntity.ok(LojaDTO(it.id, it.nome, CategoriaDTO(it.categoria))) }
             .orElse(ResponseEntity.notFound().build())
 
     @PutMapping("/{id}")
     fun atualizar(@PathVariable id: Long, @RequestBody dto: LojaDTO): ResponseEntity<LojaDTO> {
         val loja = lojaRepository.findById(id).orElse(null) ?: return ResponseEntity.notFound().build()
-        val categoria = categoriaRepository.findById(dto.categoriaId).orElse(null)
+        val categoria = categoriaRepository.findById(dto.categoria.id!!).orElse(null)
             ?: return ResponseEntity.badRequest().build()
         val atualizada = lojaRepository.save(loja.copy(nome = dto.nome, categoria = categoria))
-        return ResponseEntity.ok(LojaDTO(atualizada.id, atualizada.nome, atualizada.categoria.id))
+        return ResponseEntity.ok(LojaDTO(atualizada.id, atualizada.nome, CategoriaDTO(atualizada.categoria)))
     }
 
     @DeleteMapping("/{id}")

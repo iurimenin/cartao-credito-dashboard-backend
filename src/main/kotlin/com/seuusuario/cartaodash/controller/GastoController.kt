@@ -1,6 +1,7 @@
 package com.seuusuario.cartaodash.controller
 
 import com.seuusuario.cartaodash.dto.GastoDTO
+import com.seuusuario.cartaodash.dto.LojaDTO
 import com.seuusuario.cartaodash.repository.GastoRepository
 import com.seuusuario.cartaodash.service.ImportacaoCSVService
 import org.springframework.http.ResponseEntity
@@ -30,8 +31,9 @@ class GastoController(
             id = it.id,
             data = it.data,
             descricao = it.descricao,
+            parcela = it.parcela,
             valor = it.valor,
-            lojaId = it.loja?.id
+            loja = LojaDTO(it.loja)
         )
     }
 
@@ -44,8 +46,9 @@ class GastoController(
                         id = it.id,
                         data = it.data,
                         descricao = it.descricao,
+                        parcela = it.parcela,
                         valor = it.valor,
-                        lojaId = it.loja?.id
+                        loja = LojaDTO(it.loja)
                     )
                 )
             }

@@ -1,0 +1,1 @@
+ALTER TABLE gasto ADD COLUMN parcela VARCHAR(255);
