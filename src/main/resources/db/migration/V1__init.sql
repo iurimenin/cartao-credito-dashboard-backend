@@ -1,0 +1,24 @@
+CREATE TABLE categoria (
+    id BIGSERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE loja (
+    id BIGSERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL UNIQUE,
+    categoria_id BIGINT REFERENCES categoria(id)
+);
+
+CREATE TABLE usuario (
+    id BIGSERIAL PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE gasto (
+    id BIGSERIAL PRIMARY KEY,
+    data DATE NOT NULL,
+    descricao VARCHAR(255) NOT NULL,
+    valor NUMERIC(15,2) NOT NULL,
+    loja_id BIGINT REFERENCES loja(id)
+); 

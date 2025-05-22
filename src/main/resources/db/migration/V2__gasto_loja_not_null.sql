@@ -1,0 +1,1 @@
+ALTER TABLE gasto ALTER COLUMN loja_id SET NOT NULL; 
